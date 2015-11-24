@@ -63,9 +63,9 @@ class Get_Proxy:
         try:
             response = opener.open(check_url,timeout=5)
         except:
-            return "Invalid"
+            return False
         else:
-            return "Valid"
+            return True
 
 
     #检测代理ip列表文件,需要传入文件路径
@@ -74,8 +74,9 @@ class Get_Proxy:
             proxy_file = open(file_path)
             for line in proxy_file:
                 ip_list = line.split(",")
+                #调用检测函数,检测代理ip的有效性
                 proxy_status = self.CheckIpStatus(ip_list[0],ip_list[1])
-                if proxy_status == "Valid":
+                if proxy_status:
                     print ip_list[0],ip_list[1]
                 else:
                     print "%s is invalid" % (ip_list[0])
