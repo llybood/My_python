@@ -5,18 +5,22 @@ import urllib
 import urllib2
 import re
 import socket
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
 
 class Get_Proxy:
     #定义一些初始化变量,
-    def __init__(self,is_High_hide):
+    def __init__(self):
         self.user_agent = "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36"
-        self.headers = { 'User-Agent' : 'self.user_agent'}
-        self.High_hide = is_High_hide
-        self.pageIndex = 1
+        self.headers = { 'User-Agent' : self.user_agent }
+        #self.High_hide = is_High_hide
+        #self.pageIndex = 1
 
     #获取页面数据
-    def getPage(self):
-        url = "http://www.xicidaili.com/wn/" + str(self.pageIndex)
+    def getPage(self,proxy_url,pageindex=1):
+        url = "http://www.xicidaili.com/wn/" + str(pageindex)
         request = urllib2.Request(url,headers=self.headers)
         try:
             response = urllib2.urlopen(request)
@@ -49,21 +53,41 @@ class Get_Proxy:
 
     #检测代理ip的状态,需要传入代理ip,和端口号
     def CheckIpStatus(self,ip,port):
-        check_url = "http://www.baidu.com"
-        proxy_url = "http://" + str(ip) + str(port)
-        handler = urllib2.ProxyHandler({"http":proxy_url})
+        #定义一个测试请求地址
+        check_url = urllib2.Request("http://www.kuaiyoukuaidi.com")
+        #创建proxyhandler
+        handler = urllib2.ProxyHandler({"http": r'http://%s:%s' % (ip,port)})
         opener = urllib2.build_opener(handler)
-        opener.addheaders = self.headers
+        #添加头部
+        opener.addheaders = [('User-Agent',self.user_agent)]
         try:
-            response = opener.open(check_url)
-            print response
-        except urllib2.URLError,e:
-            print e.code
-            print e.reason
+            response = opener.open(check_url,timeout=5)
+        except:
+            return "Invalid"
+        else:
+            return "Valid"
+
+
+    #检测代理ip列表文件,需要传入文件路径
+    def Checkproxyfile(self,file_path):
+         try:
+            proxy_file = open(file_path)
+            for line in proxy_file:
+                ip_list = line.split(",")
+                proxy_status = self.CheckIpStatus(ip_list[0],ip_list[1])
+                if proxy_status == "Valid":
+                    print ip_list[0],ip_list[1]
+                else:
+                    print "%s is invalid" % (ip_list[0])
+            proxy_file.close()
+         except IOError,err:
+             print "打开文件错误,原因\n%s" % (err,)
 
 
 
 
-proxy = Get_Proxy(False)
+
+proxy = Get_Proxy()
 #proxy.getIplist()
-proxy.CheckIpStatus("171.6.132.96",8080)
+#proxy.CheckIpStatus("111.11.184.51",9999)
+proxy.Checkproxyfile("F:\PycharmProjects\My_python\prox_list.txt")
