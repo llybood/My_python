@@ -20,9 +20,9 @@ def get_distance(LatA,LonA,LatB,LonB):
     radLatA,radLonA,radLatB,radLonB = map(radians,[LatA,LonA,LatB,LonB])
     distance = R * acos(cos(radLatA) * cos(radLatB) * cos(radLonA-radLonB) + sin(radLatA) * sin(radLatB))
 
-    return distance
+    print distance
 
-#get_distance(39.927132,116.462845,39.957378,116.543427)
+get_distance(39.852795,116.593842,39.961948,116.463234)
 
 def select_data(agent_name,scantime,area):
     #获取原始数据(连接远程数据库)
@@ -41,6 +41,7 @@ def select_data(agent_name,scantime,area):
         #调用get_distance函数,获取距离,因为数据库存的是乘以1000000后的数字,所以需要换算
         #乘以浮点数,避免四舍五入
         distance = get_distance(row[1]/1000000.00,row[2]/1000000.00,row[3]/1000000.00,row[4]/1000000.00)
+        #distance = get_distance(row[1]/1000000.00,row[2]/1000000.00,39.989956,116.323066)
         sql1 = "select count(*) from t_exchange_code_record where userOpenId=(select openid from 用户 where id='%s') and date(useTime)='%s'" % (row[0],scantime)
         #print distance
         #print sql1
@@ -54,6 +55,6 @@ def select_data(agent_name,scantime,area):
 
     print "扫码人数: %s\n用户领取红包数: %s" % (human_count,total_redpack_count)
     conn.close()
-select_data(agent_name="李达夏",scantime="2015-11-18",area=10000.00)
+#select_data(agent_name="刘永明",scantime="2015-11-29",area=10000.00)
 
 

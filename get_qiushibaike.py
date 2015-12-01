@@ -31,7 +31,7 @@ class QSBK:
             response = urllib2.urlopen(request)
             #将页面转化为UTF-8编码
             pageCode = response.read()
-            return pageCode
+            return pageCode.decode("utf-8")
         except urllib2.URLError,e:
             if hasattr(e,'reason'):
                 print "连接糗事百科失败,错误原因",e.reason
