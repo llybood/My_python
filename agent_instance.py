@@ -26,7 +26,7 @@ get_distance(39.852795,116.593842,39.961948,116.463234)
 
 def select_data(agent_name,scantime,area):
     #获取原始数据(连接远程数据库)
-    conn = MySQLdb.connect(host="182.92.112.41",user="lilili",passwd="Lilili07231647",db="kuaiyou",charset="utf8")
+    conn = MySQLdb.connect(host="localhost",user="test",passwd="test",db="test",charset="utf8")
     cur = conn.cursor()
     #拼接sql语句,限定代理人姓名和日期为选择条件
     sql= "select userId,user_location_x,user_location_y,agent_location_x,agent_location_y from t_scan_qrcode where agentid=(select id from 用户 where real_name='%s') and date(FROM_UNIXTIME(scantime))='%s'" % (agent_name,scantime)

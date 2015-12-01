@@ -20,10 +20,10 @@ class kuaixiaodi_extend:
         #手机号码归属地查询api接口地址
         self.ownership_api="https://tcc.taobao.com/cc/json/mobile_tel_segment.htm?tel="
         #数据库变量
-        self.host="182.92.112.41"
-        self.user="lilili"
-        self.port=3306
-        self.password="Lilili07231647"
+        #self.host="localhost"
+        #self.user="test"
+        #self.port=3306
+        #self.password="test"
 
     #获取数据库数据,并且储存在xlsx文件中
     def Get_mysqldata(self,database,sql):
