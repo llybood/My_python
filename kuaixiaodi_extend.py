@@ -1,6 +1,7 @@
 #-*- coding: utf-8 -*-
 __author__ = "coolfire"
 
+import ConfigParser
 import urllib
 import urllib2
 import MySQLdb
@@ -8,42 +9,43 @@ import os
 import sys
 import re
 from openpyxl import Workbook
+from openpyxl import load_workbook
+from openpyxl.cell import get_column_letter
 
 #编写快小递后台扩展功能,直接查询数据库获取一些数据信息,并按照一定规则来处理
 #所以我们在这里把它封装成一个类,然后逐渐添加方法,来扩展我们的功能
 
 class kuaixiaodi_extend:
     def __init__(self):
+        #读取配置文件
+        cf = ConfigParser.ConfigParser()
+        cf.read("api.conf")
         #初始化一些变量
         self.user_agent="Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36"
         self.header={ "User_Agent" : self.user_agent }
         #手机号码归属地查询api接口地址
-        self.ownership_api="https://tcc.taobao.com/cc/json/mobile_tel_segment.htm?tel="
+        self.ownership_api=cf.get("api","ownership_api")
         #数据库变量
-        #self.host="localhost"
-        #self.user="test"
-        #self.port=3306
-        #self.password="test"
+        self.host=cf.get("db","db_host")
+        self.user=cf.get("db","db_user")
+        self.port=cf.get("db","db_port")
+        self.password=cf.get("db","db_password")
 
-    #获取数据库数据,并且储存在xlsx文件中
+    #获取数据库数据,并且储存在txt文件中
     def Get_mysqldata(self,database,sql):
-        #创建工作薄,用来保存数据
-        wb = Workbook()
-        ws1 = wb.active
-        phone_list=[]
+        phone_file=open("phone.txt","a")
         try:
-            #连接数据库
+            #连接数据库,获取全部数据
             conn = MySQLdb.connect(host=self.host,user=self.user,port=self.port,passwd=self.password,db=database)
             cur = conn.cursor()
             cur.execute(sql)
             rows = cur.fetchall()
-            row_count = cur.rowcount
-
             cur.close()
-            for row_number in range(row_count):
-                for row in rows:
-                    ws1.append(row[:])
-            wb.save("phone.xlsx")
+            #保存到文件
+            for row in rows:
+                phone_file.write(row[0]+"\n")
+            phone_file.close()
+
         except MySQLdb.Error,e:
             print "Mysql Error %d: %s" % (e.args[0],e.args[1])
 
@@ -59,7 +61,7 @@ class kuaixiaodi_extend:
             pattern = re.compile(r".*carrier:'(.+?)'")
             m = pattern.search(page_data)
             if m:
-                return m.group(1)
+                print m.group(1)
             else:
                 return "None"
         except urllib2.URLError,e:
@@ -68,13 +70,28 @@ class kuaixiaodi_extend:
                 return None
 
     #批量查询手机号码归属地
-    #def Batch_inquire_phone(self,)
+    #传入手机号码文件,文件第一列为手机号码
+    def Batch_inquire_phone(self,file_path):
+        wb = Workbook()
+        ws1 = wb.active
+        i=1
+        for phone in open(file_path):
+            ownership=self.Inquire_phoneownership(phone)
+            ws1.cell('A%s' % (i)).value =  '%s' % phone
+            ws1.cell('B%s' % (i)).value =  '%s' % ownership
+            i+=1
+        wb.save('phone.xlsx')
+
+
+
+
 
 
 
 
 test=kuaixiaodi_extend()
-test.Get_mysqldata("kuaiyou","select phone from t_ad_active")
-#test.Inquire_phoneownership("15010589936")
+#test.Get_mysqldata("kuaiyou","select phone from t_ad_active")
+test.Inquire_phoneownership("15010589936")
+#test.Batch_inquire_phone("phone.txt")
 
 
