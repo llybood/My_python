@@ -26,10 +26,10 @@ class kuaixiaodi_extend:
         #手机号码归属地查询api接口地址
         self.ownership_api=cf.get("api","ownership_api")
         #数据库变量
-        self.host=cf.get("db","db_host")
-        self.user=cf.get("db","db_user")
-        self.port=cf.get("db","db_port")
-        self.password=cf.get("db","db_password")
+        self.host = cf.get("db","db_host")
+        self.user = cf.get("db","db_user")
+        self.port = int(cf.get("db","db_port"))
+        self.password = cf.get("db","db_password")
 
     #获取数据库数据,并且储存在txt文件中
     def Get_mysqldata(self,database,sql):
@@ -83,6 +83,35 @@ class kuaixiaodi_extend:
         wb.save('phone.xlsx')
 
 
+    def Get_update_sql(self,database):
+        #批量修改数据库记录的手机号码
+        phone_list = ['15210684468','13810411458','18001289360','13401019783','15011239564','13311332800','15010589936','18610581904','15210149221','15600123661','13910558080','13381030298','18010401012','15201059291']
+        i = 0
+        try:
+            conn = MySQLdb.connect(host=self.host,user=self.user,port=self.port,passwd=self.password,db=database)
+            cur = conn.cursor()
+            sql = 'select distinct phone from sms_records where sendStatus=0 order by id limit 5000'
+            cur.execute(sql)
+            rows = cur.fetchall()
+            #for phone in phone_list:
+            #   if phone in rows:
+            #        print phone + "True"
+            for num in range(0,5000,350):
+                sql1 = 'select id from sms_records where phone=' + str(rows[num][0])
+                cur.execute(sql1)
+                id_number = cur.fetchone()
+                print 'update sms_records set phone=' + phone_list[i] +  ' where id=' + str(id_number[0])
+                i += 1
+                if i >= 14:
+                    break
+            cur.close()
+        except MySQLdb.Error,e:
+            print "Mysql Error %d: %s" % (e.args[0],e.args[1])
+
+
+
+
+
 
 
 
@@ -91,7 +120,8 @@ class kuaixiaodi_extend:
 
 test=kuaixiaodi_extend()
 #test.Get_mysqldata("kuaiyou","select phone from t_ad_active")
-test.Inquire_phoneownership("15010589936")
+#test.Inquire_phoneownership("15010589936")
 #test.Batch_inquire_phone("phone.txt")
+test.Get_update_sql("kuaiyou")
 
 
