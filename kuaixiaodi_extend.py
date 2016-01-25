@@ -62,10 +62,11 @@ class kuaixiaodi_extend:
             m = pattern.search(page_data)
             if m:
                 print m.group(1)
+                return m.group(1)
             else:
                 return "None"
         except urllib2.URLError,e:
-            if hasattr(e.reason):
+            if hasattr(e,"reason"):
                 print "连接失败,失败原因: %s" % e.reason
                 return None
 
@@ -117,11 +118,10 @@ class kuaixiaodi_extend:
 
 
 
-
 test=kuaixiaodi_extend()
 #test.Get_mysqldata("kuaiyou","select phone from t_ad_active")
 #test.Inquire_phoneownership("15010589936")
-#test.Batch_inquire_phone("phone.txt")
-test.Get_update_sql("kuaiyou")
+test.Batch_inquire_phone("phone.txt")
+#test.Get_update_sql("kuaiyou")
 
 

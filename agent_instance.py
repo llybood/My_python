@@ -20,9 +20,9 @@ def get_distance(LatA,LonA,LatB,LonB):
     radLatA,radLonA,radLatB,radLonB = map(radians,[LatA,LonA,LatB,LonB])
     distance = R * acos(cos(radLatA) * cos(radLatB) * cos(radLonA-radLonB) + sin(radLatA) * sin(radLatB))
 
-    print distance
+    return distance
 
-get_distance(39.852795,116.593842,39.961948,116.463234)
+#get_distance(39.852795,116.593842,39.961948,116.463234)
 
 def select_data(agent_name,scantime,area):
     #获取原始数据(连接远程数据库)
