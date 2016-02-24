@@ -86,7 +86,7 @@ def main():
 			server_loop()
 
 def client_sender(buffer):
-    client = socket.socket(SOCKET.AF_INET,socket.SOCK_STREAM)
+    client = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
     
     try:
         #connect to our target host
@@ -215,7 +215,7 @@ def client_handler(client_socket):
                 response = run_command(cmd_buffer)
                 
                 #send back the response
-                client_scoket.send(response)
+                client_socket.send(response)
                 
     
         
