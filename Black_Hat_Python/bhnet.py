@@ -5,7 +5,7 @@ import socket
 import getopt
 import threading
 import subprocess
-
+import errno
 
 #define some global variables
 listen = False
@@ -49,7 +49,7 @@ def main():
         
     #read the commandline options
     try:
-        opts, args = getopt.getopt(sys.argv[1:],"hle:t:p:cu:",["help","listen","execute","target","port","command","upload"])
+        opts, args = getopt.getopt(sys.argv[1:],"hle:t:p:cu:",["help","listen","execute=","target=","port=","command=","upload="])
     except getopt.GetoptError as err:
         print str(err)
         usage()
@@ -64,6 +64,7 @@ def main():
 	    command = True
 	elif o in ("-u","--upload"):
 	    upload_destination = a
+            print o,a
 	elif o in ("-t","--target"):
 	    target = a
 	elif o in ("-p","--port"):
@@ -115,6 +116,7 @@ def client_sender(buffer):
             #wait for more input
             buffer = raw_input("")
             buffer += "\n"
+            print buffer
                 
             #send if off
             client.send(buffer)
@@ -162,35 +164,40 @@ def client_handler(client_socket):
     global uplaod
     global execute
     global command
-    client_socket.setblocking(0)
+    #client_socket.setblocking(0)
     #check for upload
     if len(upload_destination):
         
         #read in all of the bytes and write to our destination
         file_buffer = ""
         #keep reading data until none is available
-        
+        client_socket.setblocking(0)  
         while True:
-
-            time.sleep(2)
-            data = client_socket.recv(1024)
-            print data
-
-            if not len(data):
-                break
+            try:
+                data = client_socket.recv(1024)
+            except socket.error,e:
+                err = e.args[0]
+                print err
+                if err == errno.EAGAIN or err == errno.EWOULDBLOCK:
+                    time.sleep(1)
+                    print "No data available"
+                    break
+                else:
+                    print e
+                    sys.exit(1)
             else:
                 file_buffer += data
-        print file_buffer        
         # now we take these bytes and try to write them out
         
         try:
+            print upload_destination
             file_descriptor = open(upload_destination,"wb")
             file_descriptor.write(file_buffer)
             file_descriptor.close()
-            
             # acknowledge that we wrote the file out
             client_socket.send("Successfully saved file to %s\r\n" % upload_destination)
-        except:
+        except Exception,e:
+            print e
             client_socket.send("Failed to save file to %s\r\n" % upload_destination)
             
         
