@@ -30,8 +30,8 @@ def usage():
     print
     print "Examples:"
     print "bhpnet.py -t 192.168.0.1 -p 5555 -l -c"
-    print "bhpnet.py -t 192.168.0.1 -p 5555 -l -u=c:\\target.exe"
-    print "bhpnet.py -t 192.168.0.1 -p 5555 -l -e=\"cat /etc/passwd\""
+    print "bhpnet.py -t 192.168.0.1 -p 5555 -l -u c:\\target.exe"
+    print "bhpnet.py -t 192.168.0.1 -p 5555 -l -e \"cat /etc/passwd\""
     print "echo 'ABCDEFGHI' | ./bhpnet.py -t 192.168.11.12 -p 135"
     sys.exit(0)
     
@@ -64,7 +64,6 @@ def main():
 	    command = True
 	elif o in ("-u","--upload"):
 	    upload_destination = a
-            print o,a
 	elif o in ("-t","--target"):
 	    target = a
 	elif o in ("-p","--port"):
@@ -190,14 +189,12 @@ def client_handler(client_socket):
         # now we take these bytes and try to write them out
         
         try:
-            print upload_destination
             file_descriptor = open(upload_destination,"wb")
             file_descriptor.write(file_buffer)
             file_descriptor.close()
             # acknowledge that we wrote the file out
             client_socket.send("Successfully saved file to %s\r\n" % upload_destination)
         except Exception,e:
-            print e
             client_socket.send("Failed to save file to %s\r\n" % upload_destination)
             
         
