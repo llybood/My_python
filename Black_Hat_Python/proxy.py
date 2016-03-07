@@ -1,4 +1,5 @@
 #!/usr/bin/python
+#-*- coding:utf-8 -*-
 
 import sys
 import socket
@@ -67,7 +68,7 @@ def proxy_handler(client_socket,remote_host,remote_port,receive_first):
         #receive data from the remote end if necessary
         if receive_first:
             remote_buffer = receive_from(remote_socket)
-            hexdump(remote_buffer)
+            #hexdump(remote_buffer)
             #send it to our response handler
             remote_buffer = response_handler(remote_buffer)
             #if we have data to send to our local client,send it
@@ -85,7 +86,8 @@ def proxy_handler(client_socket,remote_host,remote_port,receive_first):
             if len(local_buffer):
                 print "[==>] Received %d bytes from localhost." % \
                     len(local_buffer)
-                hexdump(local_buffer)
+                #hexdump(local_buffer)
+                print local_buffer
 
                 #send it to our request handler
                 local_buffer = request_handler(local_buffer)
@@ -100,8 +102,8 @@ def proxy_handler(client_socket,remote_host,remote_port,receive_first):
 
                 print "[<==] Received %d bytes from remote." % \
                         len(remote_buffer)
-                hexdump(remote_buffer)
-
+                #hexdump(remote_buffer)
+                print remote_buffer
                 #send to our response handler
                 remote_buffer = response_handler(remote_buffer)
 
@@ -134,7 +136,7 @@ def receive_from(connection):
 
     #we set a 2 second timeou;depending on your target,this may need to be
     #adjusted
-    connection.settimeout(2)
+    connection.settimeout(0.1)
     try:
         #keep reading into the buffer until
         #there's no more data
