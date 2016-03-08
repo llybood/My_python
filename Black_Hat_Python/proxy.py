@@ -93,8 +93,11 @@ def proxy_handler(client_socket,remote_host,remote_port,receive_first):
                 local_buffer = request_handler(local_buffer)
 
                 #send off the data to the remote host
-                remote_socket.send(local_buffer)
-                print "[==>] Sent to remote"
+                try:
+                    remote_socket.send(local_buffer)
+                    print "[==>] Sent to remote"
+                except Exception,e:
+                    print e
 
                 #receive back the response
                 remote_buffer = receive_from(remote_socket)
@@ -110,8 +113,9 @@ def proxy_handler(client_socket,remote_host,remote_port,receive_first):
                 #send the response to the local socket
                 client_socket.send(remote_buffer)
                 print "[<==] Sent to localhost"
+
             #if no more data on either side,close the connections:
-            if not len(local_buffer) or not len(remote_buffer):
+            if not len(local_buffer) and not len(remote_buffer):
                 client_socket.close()
                 remote_socket.close()
                 print "[*] No more data,Closing connections."
@@ -136,13 +140,13 @@ def receive_from(connection):
 
     #we set a 2 second timeou;depending on your target,this may need to be
     #adjusted
-    connection.settimeout(0.1)
+    connection.settimeout(0.5)
     try:
         #keep reading into the buffer until
         #there's no more data
         #or we time out
         while True:
-            data = connection.recv(4096)
+            data = connection.recv(4192)
             if not data:
                 break
             buffer += data
