@@ -2,6 +2,7 @@
 __author__ = "coolfire"
 
 import socket
+socket.timeout = 5
 
 print "Creating socket"
 s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
