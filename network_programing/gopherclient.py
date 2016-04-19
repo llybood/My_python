@@ -1,6 +1,6 @@
+#!/usr/bin/python
 #-*- coding: utf-8 -*-
 __author__ = "coolfire"
-
 import socket,sys
 host = sys.argv[1]
 port = 70
