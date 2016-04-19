@@ -16,5 +16,5 @@ print 'Connect the server'
 s.connect(('www.baidu.com',80))
 print 'done'
 
-print "Connected from %s" % s.getsocketname()
+print "Connected from %s" % s.getsockname()
 print "Connected to %s" % s.getpeername()
