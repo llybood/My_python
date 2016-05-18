@@ -16,7 +16,7 @@ def echo_server(port):
     #create a TCP socket
     sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
     #Enable reuse address/port
-    socket.setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR,1)
+    sock.setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR,1)
     #Bind the socket to the port
     server_address = (host,port)
     print "Starting up echo server on %s port %s" % server_address
