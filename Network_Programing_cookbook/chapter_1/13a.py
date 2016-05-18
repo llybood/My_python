@@ -9,7 +9,7 @@ host = 'localhost'
 data_payload = 2048
 backlog = 5
 
-def echo_server(port):
+def echo_server(host,port):
     """
     A simple echo server
     """
@@ -37,6 +37,8 @@ def echo_server(port):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Socket Server Example")
     parser.add_argument("--port",action="store",dest="port",type=int,required=True)
+    parser.add_argument("--host",action="store",dest="host",required=True)
     given_args = parser.parse_args()
+    host = given_args.host
     port = given_args.port
-    echo_server(port)
+    echo_server(host,port)

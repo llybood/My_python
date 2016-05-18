@@ -6,9 +6,9 @@ import sys
 
 import argparse
 
-host = 'localhost'
+#host = 'localhost'
 
-def echo_client(port):
+def echo_client(host,port):
 	"""
 	A simple echo clinet
 	:param port:
@@ -44,7 +44,9 @@ def echo_client(port):
 
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser(description="Socket Server Example")
-	parser.add_argument("--port",action="store",dest="port",type="int",required=True)
+	parser.add_argument("--port",action="store",dest="port",type=int,required=True)
+	parser.add_argument("--host",action="store",dest="host",required=True)
 	given_args = parser.parse_args()
+	host = given_args.host
 	port = given_args.port
-	echo_client(port)
+	echo_client(host,port)
