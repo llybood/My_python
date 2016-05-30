@@ -39,7 +39,7 @@ class ThreadTCPRequestHandler(SocketServer.BaseRequestHandler):
 if __name__ == "__main__":
 	server = ThreadTcpServer((SERVER_HOST,SERVER_PORT),ThreadTCPRequestHandler)
 	ip,port = server.server_address
-	server_thread = threading.Thread(target=server.serve.forever())
+	server_thread = threading.Thread(target=server.serve_forever())
 	server_thread.setDaemon(True)
 	server_thread.start()
 	print "Server loop running on thread: %s" % server_thread.name
