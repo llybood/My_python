@@ -77,7 +77,7 @@ def main():
 	server.shutdown()
 	client1.shutdown()
 	client2.shutdown()
-	server.sock.close()
+	server.socket.close()
 
 if __name__ == "__main__":
 	main()
