@@ -36,11 +36,11 @@ class ForkingClient():
 		response = self.sock.recv(BUF_SIZE)
 		print "PID %s received: %s" % (current_process_id,response[5:])
 
-		def shutdown(self):
-			"""
-			Cleanup the client socket
-			"""
-			self.sock.close()
+	def shutdown(self):
+		"""
+		Cleanup the client socket
+		"""
+		self.sock.close()
 
 class ForkingServerRequestHandler(SocketServer.BaseRequestHandler):
 	def handle(self):
