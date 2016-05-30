@@ -45,9 +45,9 @@ if __name__ == "__main__":
 	print "Server loop running on thread: %s" % server_thread.name
 
 	#Run clients
-	client1 = client(ip,port,"Hello from client '1'")
-	client2 = client(ip,port,"Hello from client '2'")
-	client3 = client(ip,port,"Hello from client '3'")
+	client1 = client(ip,port,"Hello from client 1")
+	client2 = client(ip,port,"Hello from client 2")
+	client3 = client(ip,port,"Hello from client 3")
 
     #Server cleanup
 	server.shutdown()
