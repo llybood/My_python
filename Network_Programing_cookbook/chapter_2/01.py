@@ -64,8 +64,11 @@ def main():
 	print ip,port
 	try:
 		server_thread = threading.Thread(target=server.serve_forever())
+		print "It's ok"
 		server_thread.setDaemon(True)
+		print "It's ok"
 		server_thread.start()
+		print "It's ok"
 		print 'Server Loop running PID: %s' % os.getpid()
 	except Exception,e:
 		print e
