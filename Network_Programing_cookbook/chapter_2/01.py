@@ -61,7 +61,7 @@ def main():
 	# Launch the server
 	server = ForkingServer((SERVER_HOST,SERVER_PORT),ForkingServerRequestHandler)
 	ip,port = server.server_address
-	server_thread = threading.Thread(target=server.server_forever)
+	server_thread = threading.Thread(target=server.serve.forver)
 	server_thread.setDaemon(True)
 	server_thread.start()
 	print 'Server Loop running PID: %s' % os.getpid()
