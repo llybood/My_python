@@ -43,7 +43,7 @@ class ForkingClient():
 			self.sock.close()
 
 class ForkingServerRequestHandler(SocketServer.BaseRequestHandler):
-	def hand(self):
+	def handle(self):
 		#Send the echo back to the client
 		data = self.request.recv(BUF_SIZE)
 		current_process_id = os.getpid()
