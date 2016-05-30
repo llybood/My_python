@@ -61,7 +61,7 @@ def main():
 	# Launch the server
 	server = ForkingServer((SERVER_HOST,SERVER_PORT),ForkingServerRequestHandler)
 	ip,port = server.server_address
-	print ip.port
+	print ip,port
 	try:
 		server_thread = threading.Thread(target=server.serve_forever())
 		server_thread.setDaemon(True)
