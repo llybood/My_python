@@ -32,7 +32,7 @@ class ForkingClient():
 		print "Sent: %d characters, so far..." % sent_data_length
 
 		#Display server response
-		response = self.sock.rev(BUF_SIZE)
+		response = self.sock.recv(BUF_SIZE)
 		print "PID %s received: %s" % (current_process_id,response[5:])
 
 		def shutdown(self):
@@ -61,17 +61,10 @@ def main():
 	# Launch the server
 	server = ForkingServer((SERVER_HOST,SERVER_PORT),ForkingServerRequestHandler)
 	ip,port = server.server_address
-	print ip,port
-	try:
-		server_thread = threading.Thread(target=server.serve_forever())
-		print "It's ok"
-		server_thread.setDaemon(True)
-		print "It's ok"
-		server_thread.start()
-		print "It's ok"
-		print 'Server Loop running PID: %s' % os.getpid()
-	except Exception,e:
-		print e
+	server_thread = threading.Thread(target=server.serve_forever)
+	server_thread.setDaemon(True)
+	server_thread.start()
+	print 'Server Loop running PID: %s' % os.getpid()
 
 	#Launch the client
 	client1 = ForkingClient(ip,port)
