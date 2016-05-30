@@ -20,6 +20,7 @@ class ForkingClient():
 		self.sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 		#Connect to the server
 		self.sock.connect((ip,port))
+		print "Connect %s to the %s" % (ip,port)
 
 	def run(self):
 		"""
@@ -61,6 +62,7 @@ def main():
 	# Launch the server
 	server = ForkingServer((SERVER_HOST,SERVER_PORT),ForkingServerRequestHandler)
 	ip,port = server.server_address
+	print "The server listen on (%s,%s)" % (ip,port)
 	server_thread = threading.Thread(target=server.serve_forever)
 	server_thread.setDaemon(True)
 	server_thread.start()
