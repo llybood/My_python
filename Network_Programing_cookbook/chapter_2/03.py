@@ -88,7 +88,9 @@ class ChatServer(object):
 					print "Chat server: got connection %d  from %s" % (client.fileno(),address)
 
 					#read the login name
-					cname = receive(client).split('NAME: ')[1]
+					recv_data = receive(client)
+					print recv_data
+					cname = recv_data.split('NAME: ')[1]
 
 					#Compute client name and send back
 					self.clients += 1
@@ -195,7 +197,7 @@ class ChatClient(object):
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser(description="Socket Server Example with Select")
 	parser.add_argument("--name",action="store",dest="name",required="true")
-	parser.add_argument("--port",action='store',dest='port',required="true")
+	parser.add_argument("--port",action='store',dest='port',type=int,required="true")
 	given_args = parser.parse_args()
 	port = given_args.port
 	name = given_args.name
