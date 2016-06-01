@@ -134,7 +134,7 @@ class ChatServer(object):
 						#Remove
 						inputs.remove(sock)
 						self.outputs.remove(sock)
-				self.server.close()
+			self.server.close()
 
 
 class ChatClient(object):
