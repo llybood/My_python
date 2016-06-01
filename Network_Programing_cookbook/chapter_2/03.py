@@ -103,7 +103,6 @@ class ChatServer(object):
 					self.outputs.append(client)
 					for output in self.outputs:
 						send(output,msg)
-					print self.outputs[]
 					print "send ok"
 
 				elif sock == sys.stdin:
@@ -156,7 +155,7 @@ class ChatClient(object):
 			self.sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 			self.sock.connect((host,self.port))
 			print "Now connected to chat server@ port %d" % self.port
-			self.connected = False
+			self.connected = True
 			print self.prompt
 			#Send my name...
 			send(self.sock,'NAME: ' + self.name)
@@ -185,15 +184,15 @@ class ChatClient(object):
 						data = sys.stdin.readline.strip()
 						if data:
 							send(self.sock,data)
-						elif sock == self.sock:
-							data = receive(self.sock)
-							if not data:
-								print "Clinet shutting down."
-								self.connected = False
-								break
-							else:
-								sys.stdout.write(data+ '\n')
-								sys.stdout.flush()
+					elif sock == self.sock:
+						data = receive(self.sock)
+						if not data:
+							print "Clinet shutting down."
+							self.connected = False
+							break
+					else:
+						sys.stdout.write(data+ '\n')
+						sys.stdout.flush()
 			except KeyboardInterrupt:
 				print "Client interrupted."
 				self.sock.close()
