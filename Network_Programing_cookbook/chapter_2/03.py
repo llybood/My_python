@@ -131,10 +131,10 @@ class ChatServer(object):
 							for output in self.outputs:
 								send(output,msg)
 					except socket.error,e:
-						#Remove
+						#Removegit
 						inputs.remove(sock)
 						self.outputs.remove(sock)
-			self.server.close()
+		self.server.close()
 
 
 class ChatClient(object):
