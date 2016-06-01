@@ -119,17 +119,17 @@ class ChatServer(object):
 							for output in self.outputs:
 								if output != sock:
 									send(output,msg)
-								else:
-									print "Chat server: %d hung up" % sock.fileno()
-									self.clients -= 1
-									sock.close()
-									inputs.remove(sock)
-									self.outputs.remove(sock)
+						else:
+								print "Chat server: %d hung up" % sock.fileno()
+								self.clients -= 1
+								sock.close()
+								inputs.remove(sock)
+								self.outputs.remove(sock)
 
-									#Sending client leaving information to others
-									msg = "\n(Now hung up: Client from %s" % self.get_client_name(sock)
-									for output in self.outputs:
-										send(output,msg)
+								#Sending client leaving information to others
+								msg = "\n(Now hung up: Client from %s" % self.get_client_name(sock)
+								for output in self.outputs:
+									send(output,msg)
 					except socket.error,e:
 						#Remove
 						inputs.remove(sock)
