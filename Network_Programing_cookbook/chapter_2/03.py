@@ -112,6 +112,7 @@ class ChatServer(object):
 					#handle all other sockets
 					try:
 						data = receive(sock)
+						print data
 						if data:
 							#send as new clinet's message...
 							msg = '\n#(' + self.get_client_name(sock) + ')>>' + data
