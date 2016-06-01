@@ -104,7 +104,7 @@ class ChatServer(object):
 					self.outputs.append(client)
 
 				elif sock == sys.stdin:
-					#handle standard input
+					#handle standard inputgit
 					junk = sys.stdin.readline()
 					runing = False
 
@@ -158,6 +158,7 @@ class ChatClient(object):
 			#Send my name...
 			send(self.sock,'NAME: ' + self.name)
 			data = receive(self.sock)
+			print data
 			#Contains client address, set it
 			addr = data.split('CLIENT:')[1]
 			self.prompt = '[' + '@'.join((self.name,addr)) + ']>'
