@@ -177,7 +177,7 @@ class ChatClient(object):
 				readable,writeable,exceptionable = select.select([0,self.sock],[],[])
 				for sock in readable:
 					if sock == 0:
-						data = sys.stdin.readline.strip()
+						data = sys.stdin.readline().strip()
 						if data:
 							send(self.sock,data)
 					elif sock == self.sock:
