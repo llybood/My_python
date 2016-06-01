@@ -154,11 +154,9 @@ class ChatClient(object):
 			self.sock.connect((host,self.port))
 			print "Now connected to chat server@ port %d" % self.port
 			self.connected = True
-			print self.prompt
 			#Send my name...
 			send(self.sock,'NAME: ' + self.name)
 			data = receive(self.sock)
-			print data
 			#Contains client address, set it
 			addr = data.split('CLIENT:')[1]
 			self.prompt = '[' + '@'.join((self.name,addr)) + ']>'
@@ -185,7 +183,7 @@ class ChatClient(object):
 					elif sock == self.sock:
 						data = receive(self.sock)
 						if not data:
-							print "Clinet shutting down."
+							print "Client shutting down."
 							self.connected = False
 							break
 						else:
