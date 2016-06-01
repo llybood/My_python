@@ -99,6 +99,7 @@ class ChatServer(object):
 					self.clientmap[client] = (address,cname)
 					#Send joining information to other clients
 					msg = "\n(Connected: New client (%d) from %s)" % (self.clients,self.get_client_name(client))
+					print "ok"
 					for output in self.outputs:
 						send(output,msg)
 					self.outputs.append(client)
@@ -112,7 +113,6 @@ class ChatServer(object):
 					#handle all other sockets
 					try:
 						data = receive(sock)
-						print data
 						if data:
 							#send as new clinet's message...
 							msg = '\n#(' + self.get_client_name(sock) + ')>>' + data
