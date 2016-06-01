@@ -153,9 +153,10 @@ class ChatClient(object):
 			self.sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 			self.sock.connect((host,self.port))
 			print "Now connected to chat server@ port %d" % self.port
-			self.connected = True
+			self.connected = False
+			print self.prompt
 			#Send my name...
-			send(self.sock,'NAME' + self.name)
+			send(self.sock,'NAME: ' + self.name)
 			data = receive(self.sock)
 			#Contains client address, set it
 			addr = data.split('CLIENT:')[1]
