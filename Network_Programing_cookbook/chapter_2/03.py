@@ -188,9 +188,9 @@ class ChatClient(object):
 							print "Clinet shutting down."
 							self.connected = False
 							break
-					else:
-						sys.stdout.write(data+ '\n')
-						sys.stdout.flush()
+						else:
+							sys.stdout.write(data+ '\n')
+							sys.stdout.flush()
 			except KeyboardInterrupt:
 				print "Client interrupted."
 				self.sock.close()
