@@ -99,11 +99,9 @@ class ChatServer(object):
 					self.clientmap[client] = (address,cname)
 					#Send joining information to other clients
 					msg = "\n(Connected: New client (%d) from %s)" % (self.clients,self.get_client_name(client))
-					print "ok"
-					self.outputs.append(client)
 					for output in self.outputs:
 						send(output,msg)
-					print "send ok"
+					self.outputs.append(client)
 
 				elif sock == sys.stdin:
 					#handle standard inputgit
