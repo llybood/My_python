@@ -103,6 +103,7 @@ class ChatServer(object):
 					self.outputs.append(client)
 					for output in self.outputs:
 						send(output,msg)
+					print self.outputs[]
 					print "send ok"
 
 				elif sock == sys.stdin:
