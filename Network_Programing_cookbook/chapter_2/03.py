@@ -16,15 +16,12 @@ CHAT_SERVER_NAME = 'server'
 def send(channel,*args):
 	buffer = cPickle.dumps(args)
 	value = socket.htonl(len(buffer))
-	print value
 	size = struct.pack("L",value)
-	print size
 	channel.send(size)
 	channel.send(buffer)
 
 def receive(channel):
 	size = struct.calcsize("L")
-	print size
 	size = channel.recv(size)
 	try:
 		size = socket.ntohl(struct.unpack("L",size)[0])
@@ -33,7 +30,10 @@ def receive(channel):
 	buf = ""
 	while len(buf) < size:
 		buf = channel.recv(size - len(buf))
-	return cPickle.loads(buf)[0]
+	buffer = cPickle.loads(buf)
+	print buffer
+	return buffer[0]
+	#return cPickle.loads(buf)[0]
 
 class ChatServer(object):
 	"""
