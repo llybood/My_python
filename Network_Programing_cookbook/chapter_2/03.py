@@ -16,7 +16,9 @@ CHAT_SERVER_NAME = 'server'
 def send(channel,*args):
 	buffer = cPickle.dumps(args)
 	value = socket.htonl(len(buffer))
+	print value
 	size = struct.pack("L",value)
+	print size
 	channel.send(size)
 	channel.send(buffer)
 
