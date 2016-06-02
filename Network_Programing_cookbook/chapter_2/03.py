@@ -30,10 +30,7 @@ def receive(channel):
 	buf = ""
 	while len(buf) < size:
 		buf = channel.recv(size - len(buf))
-	buffer = cPickle.loads(buf)
-	print buffer
-	return buffer[0]
-	#return cPickle.loads(buf)[0]
+	return cPickle.loads(buf)[0]
 
 class ChatServer(object):
 	"""
