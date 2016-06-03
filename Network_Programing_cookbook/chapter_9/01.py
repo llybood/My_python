@@ -24,7 +24,7 @@ def main():
 	#setup commandline arguments
 	parser = argparse.ArgumentParser(description="Packet Sniffer")
 	parser.add_argument('--iface',action='store',dest="iface",default='eth0')
-	parser.add_argument('--port',action='store',desc='port',type=int,default=80)
+	parser.add_argument('--port',action='store',dest='port',type=int,default=80)
 	#parse arguments
 	given_args = parser.parse_args()
 	iface,port = given_args.iface,given_args.port
